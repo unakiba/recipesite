@@ -116,15 +116,21 @@ header input {
 .material-box {
     display: flex;
     justify-content: space-between;
-    border-bottom: solid 1px #8D8D8D;
+    flex-wrap: wrap;
+    
    margin: 20px;
-
 }
+
+
+
 .box-left {
     flex-basis: 80%;
+    border-bottom: solid 1px #8D8D8D;
 }
 
 .box-right {
+    border-bottom: solid 1px #8D8D8D;
+    text-align: right;
     flex-basis: 20%;
 }
 
@@ -147,10 +153,13 @@ header input {
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .order{  
+    
     width: 22.5%;
     height: 300px;
     margin-right: 2%;
+    
 }
 .comment {
     width: 45%;
