@@ -118,8 +118,10 @@ header input {
     justify-content: space-between;
     border-bottom: solid 1px #8D8D8D;
    margin: 20px;
-
 }
+
+
+
 .box-left {
     flex-basis: 80%;
 }
@@ -146,6 +148,9 @@ header input {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+.order li {
+    list-style: none;
 }
 .order{  
     width: 22.5%;

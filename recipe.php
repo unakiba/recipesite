@@ -1,3 +1,50 @@
+<?php
+/**
+ * データベースの接続
+ */
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'recipe');
+define('DB_USER', 'root');
+define('DB_PASSWORD', 'root');
+define('DB_PORT', '3306');
+
+// 文字化け対策
+$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET CHARACTER SET 'utf8'");
+
+// データベースの接続
+try {
+  $dbh = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD, $options);
+  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+  echo $e->getMessage();
+  exit;
+}
+
+$recipe_id = $_GET['recipe_id'];
+
+
+// レシピを取得
+$stmt = $dbh->prepare('SELECT * from recipes WHERE  recipe_id = ?');
+$stmt->bindParam(1, $recipe_id,PDO::PARAM_INT);
+$stmt->execute();
+$recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+// 材料を取得
+  $stmt = $dbh->prepare('SELECT * from materials WHERE recipe_id = ?');
+  $stmt->bindParam(1, $recipe['recipe_id'], PDO::PARAM_INT);
+  $stmt->execute();
+  $recipe['materials'] = $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+
+// 手順を取得
+
+  $stmt = $dbh->prepare('SELECT * from processes WHERE recipe_id = ?');
+  $stmt->bindParam(1, $recipe['recipe_id'], PDO::PARAM_INT);
+  $stmt->execute();
+  $recipe['prosesses'] = $processes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -31,11 +78,11 @@
     </ul>
 
     <div class="title">
-      <h2>料理名ああああああああああああああああ</h2>
+      <h2><?php echo $recipe['recipe_name']; ?></h2>
     </div>
     <div id="top">
       <div class="images">
-        <img src="./images/emanuel-ekstrom-qxvhDhjFy4o-unsplash 3.jpg" alt="">
+        <img src="./images/recipes/<?php echo $recipe['recipe_image'];  ?>"  alt="">
       </div>
       <div class="various">
         <div class="users">
@@ -43,24 +90,18 @@
         </div>
  
         <div class="materials">
-          <h3>材料(#人前)</h3>
+          <h3>材料(<?php echo $recipe['number_of_materials']; ?>人前)</h3>
           <div class="material-box">
-            <div class="box-left">マカロニ</div>
-            <div class="box-right">適量</div>
+            
+              <?php  foreach($recipe['materials'] as $material): ?>
+                <div class="box-left"><?php echo $material['material_name'] ; ?></div> 
+                <div class="box-right"><?php echo $material['material_amount']; ?></div> 
+              <?php endforeach ?>
+            </ul>
+            
           </div>
 
-          <div class="material-box">
-            <div class="box-left">オリーブオイル</div>
-            <div class="box-right">適量</div>
-          </div>
-          <div class="material-box">
-            <div class="box-left">塩</div>
-            <div class="box-right">適量</div>
-          </div>
-          <div class="material-box">
-            <div class="box-left">こしょう</div>
-            <div class="box-right">適量</div>
-          </div>
+
         </div>
 
 
@@ -70,25 +111,14 @@
       <h3>作り方</h3>
       <div class="single">
         <div class="order">
-          <h3>1</h3>
-          <p>マカロニを茹でる。なんかよい感じで</p>
+            <?php  foreach($processes as $process): ?>
+            <h3><?php echo $process['process_number']; ?></h3>
+            <p><?php echo $process['process_content']; ?></p>
+            <?php endforeach ?>
+          </ul>
+        
         </div>
-        <div class="order">
-          <h3>2</h3>
-          <p>マカロニを茹でる。なんかよい感じで</p>
-        </div>
-        <div class="order">
-          <h3>3</h3>
-          <p>マカロニを茹でる。なんかよい感じで</p>
-        </div>
-        <div class="order">
-          <h3>4</h3>
-          <p>マカロニを茹でる。なんかよい感じで</p>
-        </div>
-        <div class="order">
-          <h3>5</h3>
-          <p>マカロニを茹でる。なんかよい感じで</p>
-        </div>
+        
         <div class="comment">
           <h3>コツ・コメント</h3>
           <p>あああああああああああああああ</p>
