@@ -35,6 +35,7 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
   $stmt->bindParam(1, $recipe['recipe_id'], PDO::PARAM_INT);
   $stmt->execute();
   $recipe['materials'] = $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
   
 
 // 手順を取得
@@ -82,7 +83,7 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
     </div>
     <div id="top">
       <div class="images">
-        <img src="./images/recipes/<?php echo $recipe['recipe_image'];  ?>"  alt="">
+        <img src="./images/recipes/<?php echo $recipe['recipe_image'];  ?>" alt="">
       </div>
       <div class="various">
         <div class="users">
@@ -92,16 +93,13 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
         <div class="materials">
           <h3>材料(<?php echo $recipe['number_of_materials']; ?>人前)</h3>
           <div class="material-box">
-            
-              <?php  foreach($recipe['materials'] as $material): ?>
-                <div class="box-left"><?php echo $material['material_name'] ; ?></div> 
-                <div class="box-right"><?php echo $material['material_amount']; ?></div> 
-              <?php endforeach ?>
-            </ul>
-            
+            <?php  foreach($recipe['materials'] as $material): ?>
+                  <div class="box-left"><?php echo $material['material_name'] ; ?></div> 
+                  <div class="box-right"><?php echo $material['material_amount']; ?></div> 
+                <?php endforeach ?>
           </div>
 
-
+        
         </div>
 
 
@@ -111,12 +109,10 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
       <h3>作り方</h3>
       <div class="single">
         <div class="order">
-            <?php  foreach($processes as $process): ?>
-            <h3><?php echo $process['process_number']; ?></h3>
-            <p><?php echo $process['process_content']; ?></p>
-            <?php endforeach ?>
-          </ul>
-        
+          <?php  foreach($processes as $process): ?>
+              <h3><?php echo $process['process_number']; ?></h3>
+              <p><?php echo $process['process_content']; ?></p>
+              <?php endforeach ?>
         </div>
         
         <div class="comment">
