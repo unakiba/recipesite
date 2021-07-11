@@ -117,7 +117,7 @@ header input {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    
+    border-bottom: solid 1px #8D8D8D;
    margin: 20px;
 }
 
@@ -125,11 +125,10 @@ header input {
 
 .box-left {
     flex-basis: 80%;
-    border-bottom: solid 1px #8D8D8D;
 }
 
 .box-right {
-    border-bottom: solid 1px #8D8D8D;
+
     text-align: right;
     flex-basis: 20%;
 }
@@ -155,16 +154,15 @@ header input {
 }
 
 .order{  
-    
-    width: 22.5%;
     height: 300px;
-    margin-right: 2%;
+    flex-basis: 22.5%;
+    padding: 0 10px;
     
 }
 .comment {
-    width: 45%;
+    flex-basis: 22.5%;
     height: 300px;
-    padding-left: 2%;
+    padding: 0 10px;
     
     background-color: #ffffd1;
 }

@@ -67,7 +67,8 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
       <button>詳細検索</button>
     </div>
     <div class="right">
-      <button>ログイン</button>
+      <button onclick="location.href='./user-registration/index.php'">新規登録</button>
+      <button onclick="location.href='./user-registration/login.php'">ログイン</button>
       <button>レシピ投稿</button>
     </div>
   </header>
@@ -92,13 +93,14 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
  
         <div class="materials">
           <h3>材料(<?php echo $recipe['number_of_materials']; ?>人前)</h3>
+          <?php  foreach($recipe['materials'] as $material): ?>
           <div class="material-box">
-            <?php  foreach($recipe['materials'] as $material): ?>
+            
                   <div class="box-left"><?php echo $material['material_name'] ; ?></div> 
                   <div class="box-right"><?php echo $material['material_amount']; ?></div> 
-                <?php endforeach ?>
+                
           </div>
-
+          <?php endforeach ?>
         
         </div>
 
@@ -108,17 +110,22 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
     <div id="process">
       <h3>作り方</h3>
       <div class="single">
+      <?php  foreach($processes as $process): ?>
         <div class="order">
-          <?php  foreach($processes as $process): ?>
+          
               <h3><?php echo $process['process_number']; ?></h3>
               <p><?php echo $process['process_content']; ?></p>
-              <?php endforeach ?>
+             
         </div>
-        
+        <?php if (!empty($process['trick'])): ?>
         <div class="comment">
           <h3>コツ・コメント</h3>
-          <p>あああああああああああああああ</p>
+          <p><?php echo $process['trick'] ?></p>
         </div>
+        <?php endif ?>
+        <?php endforeach ?>
+        
+
       </div>
     </div>
     <div class="user_rev">

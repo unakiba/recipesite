@@ -40,7 +40,7 @@ foreach($recipes as  $index => $recipe) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>レシピサイト</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -53,7 +53,8 @@ foreach($recipes as  $index => $recipe) {
             <button>詳細検索</button>
         </div>
         <div class="right">
-            <button>ログイン</button>
+            <button onclick="location.href='./user-registration/index.php'">新規登録</button>
+            <button onclick="location.href='./user-registration/login.php'">ログイン</button>
             <button>レシピ投稿</button>
         </div>
     </header>
