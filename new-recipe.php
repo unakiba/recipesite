@@ -40,7 +40,7 @@ if (!empty($_POST)) {
     $recipe_id = $dbh->lastInsertId();
 
     // 材料を登録する
-    foreach($data['material_name'] as $index => $row) {
+    foreach ($data['material_name'] as $index => $row) {
         if (!empty($data['material_name'][$index]) && !empty($data['material_amount'][$index])) {
             $material_insert_sql = "INSERT INTO materials (material_name, material_amount, recipe_id) VALUES (?, ?, ?)";
             $stmt = $dbh->prepare($material_insert_sql);
@@ -76,38 +76,30 @@ if (!empty($_POST)) {
         </div>
 
         <h2>材料</h2>
-        <div>
+        <div class="template">
             材料名
             <input type="text" name="material_name[]">
             分量
             <input type="text" name="material_amount[]">
         </div>
-        <div>
-            材料名
-            <input type="text" name="material_name[]">
-            分量
-            <input type="text" name="material_amount[]">
-        </div>
-        <div>
-            材料名
-            <input type="text" name="material_name[]">
-            分量
-            <input type="text" name="material_amount[]">
-        </div>
-        <div>
-            材料名
-            <input type="text" name="material_name[]">
-            分量
-            <input type="text" name="material_amount[]">
-        </div>
-        <div>
-            材料名
-            <input type="text" name="material_name[]">
-            分量
-            <input type="text" name="material_amount[]">
-        </div>
+        <button id="add-input">フォームを追加</button>
+        <div id="input-box"></div>
+
         <button type="submit">レシピ登録</button>
     </form>
+
+    <script>
+        document.querySelector('#add-input').addEventListener('click', function(event) {
+            // フォーム送信の動きを無効にする
+            event.preventDefault();
+            // template要素を取得
+            const template = document.querySelector('.template');
+            // template要素の内容を複製
+            const clone = template.cloneNode(true);
+            // #input-boxの中に追加
+            document.querySelector('#input-box').appendChild(clone);
+        })
+    </script>
 </body>
 
 </html>
