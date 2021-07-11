@@ -40,13 +40,16 @@ if (!empty($_POST)) {
     $recipe_id = $dbh->lastInsertId();
 
     // 材料を登録する
-    $material_insert_sql = "INSERT INTO materials (material_name, material_amount, recipe_id) VALUES (?, ?, ?)";
-    $stmt = $dbh->prepare($material_insert_sql);
-    $stmt->bindParam(1, $data['material_name'], PDO::PARAM_STR);
-    $stmt->bindParam(2, $data['material_amount'], PDO::PARAM_STR);
-    $stmt->bindParam(3, $recipe_id, PDO::PARAM_INT);
-    $stmt->execute();
-
+    foreach($data['material_name'] as $index => $row) {
+        if (!empty($data['material_name'][$index]) && !empty($data['material_amount'][$index])) {
+            $material_insert_sql = "INSERT INTO materials (material_name, material_amount, recipe_id) VALUES (?, ?, ?)";
+            $stmt = $dbh->prepare($material_insert_sql);
+            $stmt->bindParam(1, $data['material_name'][$index], PDO::PARAM_STR);
+            $stmt->bindParam(2, $data['material_amount'][$index], PDO::PARAM_STR);
+            $stmt->bindParam(3, $recipe_id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
 }
 
 ?>
@@ -75,14 +78,34 @@ if (!empty($_POST)) {
         <h2>材料</h2>
         <div>
             材料名
-            <input type="text" name="material_name">
-        </div>
-
-        <div>
+            <input type="text" name="material_name[]">
             分量
-            <input type="text" name="material_amount">
+            <input type="text" name="material_amount[]">
         </div>
-
+        <div>
+            材料名
+            <input type="text" name="material_name[]">
+            分量
+            <input type="text" name="material_amount[]">
+        </div>
+        <div>
+            材料名
+            <input type="text" name="material_name[]">
+            分量
+            <input type="text" name="material_amount[]">
+        </div>
+        <div>
+            材料名
+            <input type="text" name="material_name[]">
+            分量
+            <input type="text" name="material_amount[]">
+        </div>
+        <div>
+            材料名
+            <input type="text" name="material_name[]">
+            分量
+            <input type="text" name="material_amount[]">
+        </div>
         <button type="submit">レシピ登録</button>
     </form>
 </body>
