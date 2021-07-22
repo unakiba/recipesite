@@ -62,24 +62,27 @@ function is_image_file($file_path) {
     }
   }
   
-  $uploaded = false;
-  if (!empty($_FILES['uploaded_file'])) { 
-    $upload_dir = './images/recipes/';
-    $uploaded_file = $upload_dir . basename($_FILES['uploaded_file']['name']);
-
-    //画像ファイルかのチェック
-    if (is_image_file($_FILES['uploaded_file']['tmp_name'])) {
-      move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $uploaded_file);
-      $message = '画像をアップロードしました';
-
-    } else {
-      $message = '画像ファイルではありません';
+  function get_image_type($file_path) {
+    if (empty($file_path)) {
+      return false;
     }
   
-    $uploaded = true;
+    //画像ファイルのチェック
+    $result = exif_imagetype($file_path); 
+    switch($result) {
+      case IMAGETYPE_GIF:
+        return "gif";
+        break;
+      case IMAGETYPE_JPEG:
+        return "jpg";
+        break;
+      case IMAGETYPE_PNG:
+        return "png";
+        break;
+      default:
+        return false;
+    }
   }
-
-  $images = glob('./images/recipes/*');
 
 // POSTデータは$data変数にいれる
 $data = [];
@@ -87,6 +90,7 @@ $data['recipe_name'] = !empty($_POST['recipe_name']) ? $_POST['recipe_name'] : '
 $data['number_of_materials'] = !empty($_POST['number_of_materials']) ? $_POST['number_of_materials'] : '';
 $data['material_name'] = !empty($_POST['material_name']) ? $_POST['material_name'] : '';
 $data['material_amount'] = !empty($_POST['material_amount']) ? $_POST['material_amount'] : '';
+
 
 // POSTリクエストの場合はバリデーションを実行する
 if (!empty($_POST)) {
@@ -99,13 +103,36 @@ if (!empty($_POST)) {
 
   
     if (empty($errors)) {
-        $insert_sql = "INSERT INTO recipes (recipe_name, number_of_materials, user_id) VALUES (?, ?, ?)";
+        $insert_sql = "INSERT INTO recipes (recipe_name, number_of_materials, user_id, recipe_image) VALUES (?, ?, ?, ?)";
         $stmt = $dbh->prepare($insert_sql);
         $stmt->bindParam(1, $data['recipe_name'], PDO::PARAM_STR);
         $stmt->bindParam(2, $data['number_of_materials'], PDO::PARAM_INT);
         $stmt->bindParam(3, $_SESSION['user']['id'], PDO::PARAM_INT);
+        $stmt->bindParam(4, $data['recipe_image'], PDO::PARAM_STR);
         $stmt->execute();
         $recipe_id = $dbh->lastInsertId();
+        $recipe_image = 'recipe-'. $recipe_id. '.'. get_image_type($_FILES['uploaded_file']['tmp_name']);
+        $stmt = $dbh ->prepare("UPDATE recipes SET recipe_image = ? WHERE recipe_id = ?");
+        $stmt->bindParam(1, $recipe_image, PDO::PARAM_STR);
+        $stmt->bindParam(2, $recipe_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $uploaded = false;
+        if (!empty($_FILES['uploaded_file'])) { 
+          $upload_dir = './images/recipes/';
+          $uploaded_file = $upload_dir . $recipe_image;
+      
+          //画像ファイルかのチェック
+          if (is_image_file($_FILES['uploaded_file']['tmp_name'])) {
+            move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $uploaded_file);
+            $message = '画像をアップロードしました';
+      
+          } else {
+            $message = '画像ファイルではありません';
+          }
+        
+          $uploaded = true;
+        }
+
         $result = true;
     }
   }
