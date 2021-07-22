@@ -17,6 +17,8 @@ if (!empty($_POST)) {
     $errors[] = 'メールアドレスまたはパスワードに誤りがあります。';
   }
 }
+
+
 ?>
 
 <!DOCTYPE html>

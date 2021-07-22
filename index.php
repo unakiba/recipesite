@@ -1,4 +1,9 @@
 <?php
+session_start();
+require_once("./user-registration/database.php");
+
+$errors = [];
+
 /**
  * データベースの接続
  */
@@ -42,22 +47,10 @@ foreach($recipes as  $index => $recipe) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レシピサイト</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./user-registration/style.css">
 </head>
 <body>
-    <header>
-        <div class="left">
-            <h1>レシピサイト</h1>
-        </div>
-        <div class="center">
-            <input type="text" name="search" placeholder="検索">
-            <button>詳細検索</button>
-        </div>
-        <div class="right">
-            <button onclick="location.href='./user-registration/index.php'">新規登録</button>
-            <button onclick="location.href='./user-registration/login.php'">ログイン</button>
-            <button>レシピ投稿</button>
-        </div>
-    </header>
+    <?php include("./menu.php"); ?>
     <main>
         <ul id="menu">
             <li>HOME</li>

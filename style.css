@@ -29,6 +29,9 @@ header .center {
 header input {
     width: 60%;
 }
+.img {
+    max-width: 200px;
+}
 #menu {
     background-color:  #C4C4C4 ;
     list-style: none;
@@ -195,3 +198,4 @@ header input {
     margin-top: 1px;
     
 }
+
