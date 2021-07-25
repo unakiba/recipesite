@@ -25,7 +25,7 @@ try {
   exit;
 }
 // レシピを取得
-$stmt = $dbh->prepare('SELECT * from recipes');
+$stmt = $dbh->prepare('SELECT * from recipes ORDER BY recipe_id DESC LIMIT 1');
 $stmt->execute();
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
