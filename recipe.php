@@ -159,6 +159,7 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 
       </div>
 
+      <p><a href="./new-recipe-tags.php?recipe_id=<?php echo $recipe['recipe_id']?>">タグ登録</a></p>
     </div>
     
 
