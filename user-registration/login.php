@@ -3,6 +3,11 @@ session_start();
 require_once("database.php");
 require_once("function.php");
 
+// POSTデータは$data変数にいれる
+$data = [];
+$data['email'] = !empty($_POST['email'])? $_POST['email'] : '';
+$data['password'] = !empty($_POST['password'])? $_POST['password'] : '';
+
 $errors = [];
 if (!empty($_POST)) {
   $user = findUserByEmail($dbh, $_POST["email"]);
@@ -45,7 +50,7 @@ if (!empty($_POST)) {
       <div class="form-group">
         
         <label for="exampleInputEmail">メールアドレス</label>
-        <input type="email" name="email" id="exampleInputEmail" value="<?php echo $_POST['email']?>" required>
+        <input type="email" name="email" id="exampleInputEmail" value="<?php echo $data['email']?>" required>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword">パスワード</label>
